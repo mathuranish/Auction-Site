@@ -1,0 +1,49 @@
+{% extends 'auctions/layout.html'%}
+
+{% block body %}
+{% if user.is_authenticated %}
+    <h2>
+        Create Listings
+    </h2>
+
+            
+<form action="{% url 'create_listings' %}" method="POST">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Title</label>
+        <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="Enter">
+      </div>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Description</label>
+        <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+        <label>Bid</label>
+        <input type="text" name="bid" class="form-control" id="exampleFormControlInput1">
+    </div>
+    <div class="form-group"> 
+        <label for="exampleFormControlSelect1"></label>Category</label>
+        <select name ="category" class="form-control" id="exampleFormControlSelect1">
+          <option>Woodwork</option>
+          <option>Antiques</option>
+          <option>Tech</option>
+          <option>Famous</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Image URL</label>
+        <input type="text" name="image_url" class="form-control" id="exampleFormControlInput1">
+     </div>
+
+    <button class="btn btn-primary" type="submit">Submit</button>
+
+</form>
+
+{% else %}
+<div class="alert alert-warning" role="alert">
+    <strong>Not signed in. Sign in to create listings</strong>
+</div>
+{% endif %}
+
+{% endblock%}

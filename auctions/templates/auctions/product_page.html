@@ -1,0 +1,105 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="container text-center">
+  <h1>{{listing.title}}</h1>
+</div>
+<hr>
+
+{% if listing.is_closed %}
+  <div class="alert alert-success text-center" role="alert">
+    <h4>Winner is : <strong>{{listing.bid.user}}</strong></h4>
+  </div>
+{% endif %}
+
+{% if update_message %}
+  {% if is_updated %}
+    <div class="alert alert-success" role="alert">
+      {{update_message}}
+    </div>
+  {% else %}
+    <div class="alert alert-danger" role="alert">
+      {{update_message}}
+    </div>
+  {% endif %}
+{% endif %}
+
+<div class="text-center">
+    <img src="{{listing.url}}" class="rounded img-fluid" alt="Image not found!" height="50%" width="40%">
+</div>
+<br>
+<div class="jumbotron jumbotron-fluid rounded">
+  <div class="container">
+    <h4 class="badge badge-pill badge-info ">Category: {{listing.category}}</h4>
+    <p class="lead text-left">{{listing.description}}</p>
+    {% if not listing.is_closed %}
+      <h5><p class="lead badge badge-secondary text"> Current Bid is: {{listing.bid}} by {{listing.bid.user }}</p></h5>
+    {% else %}
+      <h5><p class="lead badge badge-secondary text"> Highest Bid was: {{listing.bid}} by {{listing.bid.user }}</p></h5>
+    {% endif %}    
+    {% if user.is_authenticated and not is_user %}
+    <form action="{% url 'new_bid' listing.id %}" method="POST">
+      {% csrf_token %}
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <button type="submit" class="btn btn-outline-dark">Make new Bid</button>
+        </div>
+          <input type="text" name="new_bid" class="form-control" placeholder="Place bid" aria-describedby="basic-addon1">
+        </div>
+    </form>
+    {% endif %}
+    {% if not user.is_authenticated and not listing.is_closed %}
+      <p class="lead text-left h4">Login to make a bid.</p>
+    {% endif %}
+
+    <p class="lead text-left">Listed by: {{listing.owner}}</p>
+    {% if is_user and not listing.is_closed %}
+      <h4><a href="{% url 'close_listing' listing.id %}" class="badge badge-dark">Close listing</a></h4>
+    {% else %}
+      {% if not in_watchlist%}
+        <a href="{% url 'add_to_watchlist' listing.id %}" class="badge badge-warning">Add to watchlist</a>
+      {% else %}
+        <a href="{% url 'remove_from_watchlist' listing.id %}" class="badge badge-warning">Remove from watchlist</a>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+{% if user.is_authenticated %}
+<form action="{% url 'new_comment' listing.id %}" method="POST" >
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Comment here :</label>
+    <textarea class="form-control" rows="3" name="comment"></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-outline-dark">Submit</button>
+</form>
+
+{% endif %}
+
+
+
+<br>
+
+<p class="lead text-left h4">Comments</p>
+  {% for comment in comments %}
+      
+      <div class="card border-info mb-3">
+        <div class="card-header">
+          Written By : {{comment.written_by}}
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{comment.text}}</p>
+        </div>
+      </div>
+  {% endfor %}
+
+<! -- {{listing.title}}
+{{comments.text}}
+{{in_watchlist}}
+{{is_user}}
+{{listing.is_closed}} -->
+
+
+{% endblock%}

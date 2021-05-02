@@ -1,0 +1,32 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+        <div class="card-deck">
+            {% for listing in listings %}
+            
+            <div class="card col-sm-3">
+              <img src="{{listing.url}}" class="card-img-top" alt="Image not Found" height="40%">
+              <div class="card-body">
+                <h3 class="card-title">
+                    <a href="{% url 'product_page' listing.id %}">   {{listing.title}}</a>
+                </h3>
+                <p class="card-text">
+                    <h6>{{listing.description}}</h6><br><br>
+                    {% if not listing.is_closed %}
+                      <span class="badge badge-success">Active</span>
+                    {% else %}
+                      <span class="badge badge-danger">Closed</span>
+                    {% endif %}
+                    <br>
+                    Price: {{listing.bid}}<br>
+                    Category: {{listing.category}}<br>
+                </p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        
+
+{% endblock %}

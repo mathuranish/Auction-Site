@@ -1,0 +1,27 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<br>
+
+<form action="{% url 'categories_page' %}" method="POST" >
+{% csrf_token %}
+<ul class="list-group">
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <button name="category" type="submit" value="Woodwork" class="btn btn-light btn-lg btn-block">Woodwork</button>
+      <span class="badge badge-primary badge-pill">{{woodwork_count}}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <button name="category" type="submit" value="Antique" class="btn btn-light btn-lg btn-block">Antique</button>
+      <span class="badge badge-primary badge-pill">{{antiques_count}}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <button name="category" type="submit" value="Tech" class="btn btn-light btn-lg btn-block">Tech</button>
+      <span class="badge badge-primary badge-pill">{{tech_count}}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <button name="category" type="submit" value="Famous" class="btn btn-light btn-lg btn-block">Famous</button>
+        <span class="badge badge-primary badge-pill">{{famous_count}}</span>
+    </li>
+</ul>
+</form>
+{% endblock%}
